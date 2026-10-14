@@ -1,0 +1,178 @@
+{
+    "aboutFlauncher": "Acerca de FLauncher",
+    "addCategory": "Agregar categoría",
+    "addSection": "Agregar sección",
+    "alphabetical": "Alfabético",
+    "appCardHighlightAnimation": "Resaltar aplicaciones",
+    "showFocusBorders": "Mostrar bordes de enfoque",
+    "appInfo": "Datos de la aplicación",
+    "appKeyClick": "Sonido al presionar una tecla",
+    "appearanceSettings": "Apariencia",
+    "backgroundBlur": "Desenfoque de fondo",
+    "dockBlur": "Desenfoque del dock",
+    "dockDarkBackground": "Fondo oscuro del dock",
+    "dockShadow": "Sombra del dock",
+    "applications": "Aplicaciones",
+    "autoHideAppBar": "Ocultar barra de estado automáticamente",
+    "backButtonAction": "Acción del botón 'Atrás'",
+    "category": "Categoría",
+    "categories": "Categorías",
+    "columnCount": "Cantidad de columnas",
+    "date": "Fecha",
+    "dateAndTimeFormat": "Formato de fecha y hora",
+    "delete": "Eliminar",
+    "dialogOptionBackButtonActionDoNothing": "Nada",
+    "dialogOptionBackButtonActionShowScreensaver": "Mostrar salvapantallas",
+    "dialogOptionBackButtonActionShowClock": "Mostrar reloj",
+    "dialogTextNoFileExplorer": "Por favor, instale un gestor de archivos para seleccionar una imagen.",
+    "dialogTitleBackButtonAction": "Elegir la acción del botón 'Atrás'",
+    "disambiguateCategoryTitle": "{title} (Categoría)",
+    "@disambiguateCategoryTitle": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "formattedDate": "Fecha con formato: {dateString}",
+    "@formattedDate": {
+        "placeholders": {
+            "dateString": {
+                "type": "String"
+            }
+        }
+    },
+    "formattedTime": "Hora con formato: {timeString}",
+    "@formattedTime": {
+        "placeholders": {
+            "timeString": {
+                "type": "String"
+            }
+        }
+    },
+    "gradient": "Gradiente",
+    "favoriteApps": "Favoritas",
+    "grid": "Cuadrícula",
+    "height": "Altura",
+    "hide": "Ocultar",
+    "hiddenApplications": "Aplicaciones ocultas",
+    "launcherSections": "Secciones",
+    "layout": "Distribución",
+    "loading": "Cargando",
+    "manual": "Manual",
+    "modifySection": "Modificar sección",
+    "mustNotBeEmpty": "No debe estar vacío",
+    "name": "Nombre",
+    "newSection": "Nueva sección",
+    "noDateFormatSpecified": "Sin formato de fecha",
+    "noTimeFormatSpecified": "Sin formato de hora",
+    "allApplications": "Todas las aplicaciones",
+    "nonTvApplications": "Otras aplicaciones",
+    "open": "Abrir",
+    "orSelectFormatSpecifiers": "O seleccione especificadores de formato",
+    "picture": "Imagen",
+    "removeFrom": "Remover de {name}",
+    "@removeFrom": {
+        "placeholders": {
+            "name": { "type": "String" }
+        }
+    },
+    "renameCategory": "Renombrar categoría",
+    "reorder": "Reordenar",
+    "row": "Row",
+    "rowHeight": "Row height",
+    "save": "Guardar",
+    "spacer": "Espaciador",
+    "spacerMaxHeightRequirement": "Debe ser mayor a cero y menor o igual a 500",
+    "statusBar": "Barra de estado",
+    "settings": "Ajustes",
+    "show": "Mostrar",
+    "showCategoryTitles": "Mostrar títulos de categorías",
+    "sort": "Orden",
+    "systemSettings": "Ajustes del sistema",
+    "updateCheck": "Buscar actualizaciones",
+    "updateNoUpdateTitle": "No hay actualizaciones",
+    "updateNoUpdateBody": "Ya tienes la última versión ({currentVersion}).",
+    "@updateNoUpdateBody": {
+        "placeholders": {
+            "currentVersion": {
+                "type": "String"
+            }
+        }
+    },
+    "updateAvailableTitle": "Actualización disponible",
+    "updateAvailableBody": "La versión {latestVersion} está disponible (actual: {currentVersion}).",
+    "@updateAvailableBody": {
+        "placeholders": {
+            "latestVersion": {
+                "type": "String"
+            },
+            "currentVersion": {
+                "type": "String"
+            }
+        }
+    },
+    "updateDownloadButton": "Descargar",
+    "updateReadyToInstallTitle": "Lista para instalar",
+    "updateReadyToInstallBody": "El APK de la versión {latestVersion} ya se descargó. ¿Instalar ahora?",
+    "@updateReadyToInstallBody": {
+        "placeholders": {
+            "latestVersion": {
+                "type": "String"
+            }
+        }
+    },
+    "updateInstallButton": "Instalar",
+    "updateInstallPermissionTitle": "Se requiere permiso de instalación",
+    "updateInstallPermissionBody": "Permite que Arc Launcher instale apps desconocidas y vuelve a intentar la actualización.",
+    "updateOpenPermissionSettingsButton": "Abrir ajustes de permisos",
+    "updateErrorGeneric": "La actualización falló. Inténtalo de nuevo.",
+    "textAboutDialog": "Arc Launcher es un lanzador de código abierto personalizado para Android TV, basado en FLauncher.\n\nDesarrollado por Meddouri Badis.\nCódigo fuente disponible en {repoUrl}.",
+    "@textAboutDialog": {
+        "placeholders": {
+            "repoUrl": {
+                "type": "String"
+            }
+        }
+    },
+    "textEmptyCategory": "Esta categoría está vacía.",
+    "time": "Hora",
+    "titleStatusBarSettingsPage": "Elija la información a mostrar en la barra de estado",
+    "tvApplications": "Aplicaciones del televisor",
+    "type": "Tipo",
+    "typeInTheDateFormat": "Escriba el formato de fecha",
+    "typeInTheHourFormat": "Escriba el formato de hora",
+    "uninstall": "Desinstalar",
+    "wallpaper": "Fondo de pantalla",
+    "withEllipsisAddTo": "Añadir a...",
+    "timeBasedWallpaper": "Fondo de pantalla según la hora",
+    "pickDayWallpaper": "Elegir fondo de día",
+    "pickNightWallpaper": "Elegir fondo de noche",
+    "video": "Vídeo",
+    "pickDayVideoWallpaper": "Elegir vídeo de día",
+    "pickNightVideoWallpaper": "Elegir vídeo de noche",
+    "watchNextSectionTitle": "Ver después",
+    "showWatchNextSection": "Mostrar sección Ver después",
+    "watchNextPermissionTitle": "Se requiere permiso para Ver después",
+    "watchNextPermissionBody": "Permite el acceso a la guía de TV para mostrar lo que estabas viendo.",
+    "watchNextGrantPermission": "Conceder permiso",
+    "watchNextCheckPermission": "Comprobar de nuevo",
+    "interface": "Interfaz",
+    "system": "Sistema",
+    "accentColor": "Color de acento",
+    "miscellaneous": "Varios",
+    "brightnessScheduler": "Programador de brillo",
+    "screensaverSettings": "Ajustes del salvapantallas",
+    "screensaverClockStyle": "Estilo del reloj del salvapantallas",
+    "wifiUsagePeriod": "Período de uso de WiFi",
+    "showAppNamesBelowIcons": "Mostrar nombres bajo los iconos",
+    "wifiUsage": "Uso de WiFi",
+    "networkIndicator": "Indicador de red",
+    "customName": "Nombre personalizado",
+    "lastUsed": "Último uso",
+    "daily": "Diario",
+    "weekly": "Semanal",
+    "monthly": "Mensual",
+    "grantPermission": "Conceder permiso",
+    "checkStatus": "Comprobar estado"
+}
