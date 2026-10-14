@@ -1,0 +1,123 @@
+name: Build Arc27 Launcher
+
+# Push to main → APKs as a workflow artifact. Push a tag (e.g. v1.0.0) → also a GitHub Release.
+on:
+  push:
+    branches: [main, master, "claude/**"]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  FLUTTER_VERSION: "3.41.9"
+  # Pinned AirPlay receiver (jqssun/android-airplay-server, GPL-3.0, UxPlay engine)
+  AIRPLAY_REPO: jqssun/android-airplay-server
+  AIRPLAY_REF: c8defdd70d7e6a04f4f1b71d353653682d594106
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout Arc27 Launcher
+        uses: actions/checkout@v4
+
+      - name: Checkout AirPlay receiver
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.AIRPLAY_REPO }}
+          ref: ${{ env.AIRPLAY_REF }}
+          path: receiver
+          submodules: recursive
+
+      # ------------------------------------------------------------ signing key
+      - name: Prepare signing key
+        env:
+          KS_B64: ${{ secrets.ARCTV_KEYSTORE_BASE64 }}
+          KS_PASS: ${{ secrets.ARCTV_KEYSTORE_PASSWORD }}
+          KS_ALIAS: ${{ secrets.ARCTV_KEY_ALIAS }}
+        run: |
+          KS="$RUNNER_TEMP/arctv.jks"
+          if [ -n "$KS_B64" ]; then
+            echo "$KS_B64" | base64 -d > "$KS"
+          else
+            KS_PASS="arctv27-temporary"
+            KS_ALIAS="arctv"
+            keytool -genkeypair -noprompt -keystore "$KS" -storepass "$KS_PASS" -keypass "$KS_PASS" \
+              -alias "$KS_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=ArcTV 27"
+            echo "::warning::No ARCTV_KEYSTORE_BASE64 secret: signed with a throw-away key. Updates will need an uninstall first."
+          fi
+          echo "KS=$KS" >> "$GITHUB_ENV"
+          echo "KS_PASS=$KS_PASS" >> "$GITHUB_ENV"
+          echo "KS_ALIAS=$KS_ALIAS" >> "$GITHUB_ENV"
+          echo "::add-mask::$KS_PASS"
+
+      # ------------------------------------------------------------ AirPlay receiver
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Install NDK
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;27.0.12077973" "cmake;3.22.1" > /dev/null
+
+      - name: Patch receiver for Arc27 Launcher
+        run: python3 airplay/patch_receiver.py receiver
+
+      - name: Build receiver
+        working-directory: receiver
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon --stacktrace
+
+      - name: Sign receiver and bundle it into the launcher
+        run: |
+          BT="$ANDROID_HOME/build-tools/$(ls "$ANDROID_HOME/build-tools" | sort -V | tail -1)"
+          IN=$(find receiver/app/build/outputs/apk/release -name '*.apk' | head -1)
+          test -n "$IN" || { echo "receiver APK not found"; exit 1; }
+          mkdir -p out android/app/src/main/assets
+          "$BT/apksigner" sign --ks "$KS" --ks-pass "pass:$KS_PASS" --key-pass "pass:$KS_PASS" \
+            --ks-key-alias "$KS_ALIAS" --out out/ArcTV-AirPlay-Receiver.apk "$IN"
+          cp out/ArcTV-AirPlay-Receiver.apk android/app/src/main/assets/airplay-receiver.apk
+
+      # ------------------------------------------------------------ launcher
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Build launcher
+        run: |
+          cp "$KS" android/app/upload-keystore.jks
+          export SIGNING_KEYSTORE_PASSWORD="$KS_PASS" SIGNING_KEY_PASSWORD="$KS_PASS" SIGNING_KEY_ALIAS="$KS_ALIAS"
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then NAME="${GITHUB_REF_NAME#v}"; else NAME="27.0.0-${GITHUB_SHA::7}"; fi
+          NUMBER=$(sed -nE 's/^version:[[:space:]]*[^+]+\+([0-9]+).*/\1/p' pubspec.yaml)
+          flutter pub get
+          flutter build apk --release --flavor github --build-name="$NAME" --build-number="$NUMBER"
+          for abi in universal arm64-v8a armeabi-v7a; do
+            f=$(find build/app/outputs -name "arc-launcher-$abi-release.apk" | head -1)
+            test -n "$f" || { echo "missing $abi"; find build/app/outputs -name '*.apk'; exit 1; }
+            cp "$f" "out/Arc27-launcher-$abi.apk"
+          done
+          rm -f android/app/upload-keystore.jks
+          ls -lh out
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Arc27-launcher-apks
+          path: out/
+          if-no-files-found: error
+
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: out/*.apk
